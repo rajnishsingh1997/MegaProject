@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDropzone } from "React-dropzone";
+import { Button } from "../ui/button";
 
 function Dropzone({ open }: any) {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -17,10 +18,11 @@ function Dropzone({ open }: any) {
   });
 
   return (
-    <div className="container">
+    <div>
       <div {...getRootProps({ className: "dropzone" })}>
         <input {...getInputProps()} />
         <p>Drag 'n' drop some files here</p>
+        <Button variant={"outline"}>Open File Explorer</Button>
       </div>
     </div>
   );
