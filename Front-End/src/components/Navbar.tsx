@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-
+import {memo} from "react";
 const Navbar = () => {
   return (
    <div>
@@ -43,4 +43,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default memo(Navbar);
