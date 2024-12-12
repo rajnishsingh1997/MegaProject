@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useDropzone } from "React-dropzone";
 import { Button } from "../ui/button";
 import { FaRegFilePdf } from "react-icons/fa6";
+import DocumentUploadModal from "./DocumentUploadAction";
 
-function Dropzone({ open }: any) {
+function Dropzone() {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   //state used for showing modal for document preview
   const [isModalOpen , setIsModalOpen] = useState<boolean>(false)
@@ -26,7 +27,7 @@ function Dropzone({ open }: any) {
         {...getRootProps({
           className: `border-2 border-dashed border-white rounded-lg bg-blue-600 p-8 px-72 flex flex-col items-center justify-center text-center space-y-4`,
         })}
-        onChange={()=>setIsModalOpen(!isModalOpen)}
+        onChange={()=>setIsModalOpen(true)}
       >
         <input {...getInputProps()}  />
         <FaRegFilePdf className="text-white text-5xl" />
@@ -37,7 +38,8 @@ function Dropzone({ open }: any) {
           Choose Files 
         </Button>
         <p className="text-white text-sm font-medium">or drop files here</p>
-      </div>
+      </div> 
+      <DocumentUploadModal show={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </div>
   );
 }
