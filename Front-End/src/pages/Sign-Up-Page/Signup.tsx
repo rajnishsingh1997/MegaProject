@@ -19,7 +19,6 @@ const Signup = () => {
       email,
       password,
     };
-    // API call to create user
   };
   return (
     <div className="flex items-center justify-center">
