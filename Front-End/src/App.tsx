@@ -1,5 +1,6 @@
 import Navbar from "./components/Navbar";
 import UploadArea from "./components/upload/UploadArea";
+import Signup from "./pages/Sign-Up-Page/Signup";
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
 
       {/* Upload Area */}
       <div className="flex-1 flex items-center justify-center">
-        <UploadArea />
+        <Signup />
       </div>
     </div>
   );
