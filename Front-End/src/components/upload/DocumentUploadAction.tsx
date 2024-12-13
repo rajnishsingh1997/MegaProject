@@ -16,7 +16,13 @@ const DocumentUploadModal = ({
   uploadedFiles,
 }: Props) => {
   const [isSelected, setIsSelected] = useState<boolean>(false);
-  console.log("isSelected" , isSelected)
+
+  function resetState(){
+    setIsSelected(false)
+    setIsModalOpen(false);
+  }
+
+
   return (
     <div>
       <Modal
@@ -84,7 +90,7 @@ const DocumentUploadModal = ({
           <Modal.Footer className="flex justify-end px-6 mt-40">
             <Button
               onClick={() => {
-                setIsModalOpen(false);
+                resetState()
               }}
               variant="outline"
               className="bg-white text-blue-600 border-0 rounded-md shadow-md px-4 py-2 font-medium mr-4"
