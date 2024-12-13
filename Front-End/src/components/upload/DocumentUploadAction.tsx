@@ -1,6 +1,8 @@
 import { Button } from "../ui/button";
 import Modal from "react-bootstrap/Modal";
 import { Input } from "../ui/input";
+import clsx from "clsx";
+import { useState } from "react";
 
 interface Props {
   show: boolean;
@@ -13,6 +15,8 @@ const DocumentUploadModal = ({
   setIsModalOpen,
   uploadedFiles,
 }: Props) => {
+  const [isSelected, setIsSelected] = useState<boolean>(false);
+  console.log("isSelected" , isSelected)
   return (
     <div>
       <Modal
@@ -46,8 +50,20 @@ const DocumentUploadModal = ({
               {uploadedFiles.map((singleFile) => {
                 return (
                   <div
+                    onClick={() => {
+                      setIsSelected(!isSelected);
+                    }}
                     key={singleFile.name}
-                    className="flex items-center p-4 bg-gray-100 rounded-lg border border-gray-200 mb-2"
+                    className={clsx(
+                      "flex",
+                      "items-center",
+                      "p-4",
+                      " rounded-lg",
+                      "border",
+                      "border-gray-200 ",
+                      "mb-2",
+                      {"bg-gray-200":isSelected}
+                    )}
                   >
                     <div className="w-10 h-10 bg-gray-300 flex items-center justify-center rounded-lg mr-4">
                       <span className="text-gray-600">📄</span>
@@ -75,7 +91,7 @@ const DocumentUploadModal = ({
             >
               Cancel
             </Button>
-            <Button className="bg-blue-600 text-white rounded-md px-4 py-2 font-medium">
+            <Button disabled={!isSelected} className="bg-blue-600 text-white rounded-md px-4 py-2 font-medium">
               Start Conversation
             </Button>
           </Modal.Footer>

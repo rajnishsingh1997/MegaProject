@@ -18,7 +18,7 @@ function Dropzone() {
     accept: {
       "application/pdf": [".pdf"],
     },
-    multiple: true,
+    multiple: false,
   });
 
   return (
