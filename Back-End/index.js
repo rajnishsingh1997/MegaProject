@@ -13,10 +13,10 @@ connectToDatabase();
 
 app.get("/sign-up", async (req, res, next) => {
   const { name, email, password } = req.body;
-  if(!name || !email || !password) {
+  if (!name || !email || !password) {
     res.send({
-        message:"Please provide all the details",
-    })
+      message: "Please provide all the details",
+    });
   }
   let user = await User.findOne({ email: req.body.email });
   if (user) {
@@ -33,7 +33,7 @@ app.get("/sign-up", async (req, res, next) => {
         email: email,
       });
       await user.save();
-      return res.status(201).json(user);
+      return res.status(201).send(user);
     } catch (err) {
       return res.status(400).json({ message: err.message });
     }
