@@ -39,7 +39,7 @@ function Dropzone() {
         </Button>
         <p className="text-white text-sm font-medium">or drop files here</p>
       </div> 
-      <DocumentUploadModal show={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <DocumentUploadModal uploadedFiles={uploadedFiles} show={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </div>
   );
 }
