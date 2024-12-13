@@ -49,12 +49,9 @@ const DocumentUploadModal = ({
                     key={singleFile.name}
                     className="flex items-center p-4 bg-gray-100 rounded-lg border border-gray-200 mb-2"
                   >
-                    {/* Icon for the file */}
                     <div className="w-10 h-10 bg-gray-300 flex items-center justify-center rounded-lg mr-4">
                       <span className="text-gray-600">📄</span>
                     </div>
-
-                    {/* File Details */}
                     <div className="flex-1">
                       <p className="text-gray-800 font-medium">
                         {singleFile.name}
