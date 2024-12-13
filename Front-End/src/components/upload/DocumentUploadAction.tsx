@@ -78,9 +78,6 @@ const DocumentUploadModal = ({
                       <p className="text-gray-800 font-medium">
                         {singleFile.name}
                       </p>
-                      {/* <p className="text-gray-500 text-sm">
-                        {singleFile.uploadTime || "Just now"}
-                      </p> */}
                     </div>
                   </div>
                 );
