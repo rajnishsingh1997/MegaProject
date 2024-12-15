@@ -1,17 +1,17 @@
 import Navbar from "./components/Navbar";
-import UploadArea from "./components/upload/UploadArea";
+import Signup from "./Pages/Sign-Up-Page/Signup";
+// import UploadArea from "./components/upload/UploadArea";
+// import Login from "./Pages/Login-page/Login";
+
 
 function App() {
   return (
     <div className="flex flex-col ">
-      {/* Navbar */}
       <div className="text-white p-6">
         <Navbar />
       </div>
-
-      {/* Upload Area */}
       <div className="flex-1 flex items-center justify-center">
-        <UploadArea />
+        <Signup/>
       </div>
     </div>
   );
