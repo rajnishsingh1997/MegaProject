@@ -8,14 +8,11 @@ interface IFormInput {
 }
 
 const Signup = () => {
-
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>();
-
 
   const onSubmit: SubmitHandler<IFormInput> = ({ name, email, password }) => {
     const payload = {
@@ -24,7 +21,7 @@ const Signup = () => {
       password,
     };
 
-    console.log("my payload is" , payload)
+    console.log("my payload is", payload);
   };
   return (
     <div className="flex items-center justify-center">

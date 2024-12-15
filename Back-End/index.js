@@ -70,11 +70,11 @@ app.post("/login", async (req, res, next) => {
   }
 });
 
-app.get("/",verifyToken, (req, res, next) => {
-  res.send({
-    message: "home route",
-  });
-});
+// app.get("/", (req, res, next) => {
+//   res.send({
+//     message: "home route",
+//   });
+// });
 
 app.listen(process.env.PORT, () =>
   console.log(`Server Started on port ${process.env.PORT}`)
