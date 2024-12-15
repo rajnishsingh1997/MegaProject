@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -10,8 +10,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 const Login = () => {
   const formSchema = z.object({
@@ -28,7 +28,7 @@ const Login = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    console.log(values);
   }
 
   return (
@@ -43,7 +43,7 @@ const Login = () => {
               <FormControl>
                 <Input placeholder="Email" {...field} />
               </FormControl>
-              
+
               <FormMessage />
             </FormItem>
           )}
@@ -64,7 +64,7 @@ const Login = () => {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
+  );
 };
 
 export default Login;
