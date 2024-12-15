@@ -11,7 +11,7 @@ function App() {
         <Navbar />
       </div>
       <div className="flex-1 flex items-center justify-center">
-        <Login/>
+        <Signup/>
       </div>
     </div>
   );
