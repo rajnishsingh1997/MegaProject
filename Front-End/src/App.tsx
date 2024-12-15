@@ -1,7 +1,7 @@
 import Navbar from "./components/Navbar";
 import Signup from "./Pages/Sign-Up-Page/Signup";
 // import UploadArea from "./components/upload/UploadArea";
-// import Login from "./Pages/Login-page/Login";
+import Login from "./Pages/Login-page/Login";
 
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
         <Navbar />
       </div>
       <div className="flex-1 flex items-center justify-center">
-        <Signup/>
+        <Login/>
       </div>
     </div>
   );
