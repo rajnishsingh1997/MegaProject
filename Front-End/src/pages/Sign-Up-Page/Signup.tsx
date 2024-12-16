@@ -1,19 +1,16 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-interface IFormInput {
-  name: string;
-  email: string;
-  password: string;
-}
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 
 const Signup = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>();
+  } = useForm<z.infer<typeof formSchema>>();
 
   const formSchema = z.object({
     name: z.string().min(2).max(50),
@@ -21,10 +18,33 @@ const Signup = () => {
     password: z.string().min(2).max(50),
   });
 
-  function submitForm(value:any) {
-    console.log(value)
-  }
+  const allowedStatusCode = ["200", "201", "202", "204"];
 
+  const { toast } = useToast();
+
+ 
+  async function submitForm(value: any) {
+    const { name, email, password } = value;
+
+    if (!name || !email || !password) {
+      return;
+    }
+    try {
+      const response = await axios.post("http://localhost:3000/sign-up", value);
+      if (allowedStatusCode.includes(response.status.toString())) {
+        toast({
+          title: "Success",
+          description: "Your account has been created successfully!",
+        });
+      }
+    } catch (err: any) {
+      
+      toast({
+        title: "User Already Exists",
+        description: err?.response?.data?.message,
+      });
+    }
+  }
   return (
     <div className="flex justify-center items-center">
       <form
@@ -39,7 +59,7 @@ const Signup = () => {
         </label>
         <input
           type="text"
-          {...register("name")}
+          {...register("name", { required: true })}
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {errors?.name && (
@@ -69,7 +89,7 @@ const Signup = () => {
         </label>
         <input
           type="password"
-          {...register("password")}
+          {...register("password", { required: true })}
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {errors?.password && (
@@ -78,12 +98,12 @@ const Signup = () => {
           </p>
         )}
 
-        <button
+        <Button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 px-4 rounded mt-6 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
         >
           Sign-up
-        </button>
+        </Button>
       </form>
     </div>
   );

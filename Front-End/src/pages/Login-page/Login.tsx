@@ -12,10 +12,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import axios from "axios";
+import { toast } from "@/hooks/use-toast";
 
 const Login = () => {
   const formSchema = z.object({
-    email: z.string(),
+    email: z.string().email(),
     password: z.string().min(8),
   });
 
@@ -27,8 +29,29 @@ const Login = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  const allowedStatusCode = ["200", "201", "202", "204"];
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { email, password } = values;
+
+    if (!email || !password) {
+      return;
+    }
+    try {
+      const response = await axios.post("http://localhost:3000/login", values);
+      if (allowedStatusCode.includes(response.status.toString())) {
+        toast({
+          title: "Success",
+          description: "Successfully Logged In",
+        });
+      }
+    } catch (err: any) {
+      console.log(err)
+      toast({
+        title: "Failed To Login",
+        description: "Invalid credentials, Please check your Email and Password",
+      });
+    }
   }
 
   return (
