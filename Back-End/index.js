@@ -23,7 +23,7 @@ app.post("/sign-up", async (req, res, next) => {
   }
   let user = await User.findOne({ email: req.body.email });
   if (user) {
-    res.send({
+    res.status(409).json({
       message: "You already have account, Please login",
     });
   } else {
@@ -70,11 +70,7 @@ app.post("/login", async (req, res, next) => {
   }
 });
 
-// app.get("/", (req, res, next) => {
-//   res.send({
-//     message: "home route",
-//   });
-// });
+
 
 app.listen(process.env.PORT, () =>
   console.log(`Server Started on port ${process.env.PORT}`)
