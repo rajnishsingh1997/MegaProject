@@ -1,7 +1,10 @@
 import { ModeToggle } from "./mode-toggle";
 import { Button } from "./ui/button";
 import { memo } from "react";
+import { useNavigate } from "react-router-dom";
+
 const Navbar = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="relative">
@@ -17,10 +20,9 @@ const Navbar = () => {
             </a>
           </div>
 
-         
           <div className="flex items-center space-x-4">
-            <Button>Login</Button>
-            <Button>Sign up</Button>
+            <Button onClick={() => navigate("/v1/auth/login")}>Login</Button>
+            <Button onClick={() => navigate("/v1/auth/signup")}>Sign up</Button>
             <Button>Free Trial</Button>
             <ModeToggle />
           </div>
