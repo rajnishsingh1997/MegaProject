@@ -14,6 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
+import { toast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const formSchema = z.object({
@@ -25,6 +27,8 @@ const Signup = () => {
       .max(100),
   });
 
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,6 +38,9 @@ const Signup = () => {
     },
   });
 
+  const allowedStatusCode = ["200", "201", "202", "204"];
+
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { email, name, password } = values;
     if (!email || !name || !password) {
@@ -42,8 +49,19 @@ const Signup = () => {
 
     try {
       const response = await axios.post("http://localhost:3000/sign-up", values);
-    } catch (error) {
-      
+      if (allowedStatusCode.includes(response.status.toString())) {
+        toast({
+          title: "Success",
+          description: "Successfully Signed In",
+        });
+        navigate("/")
+      }
+    } catch (err) {
+     
+      toast({
+        title: "Failed To Signed In",
+        description: "Invalid credentials, Please check your Email and Password",
+      });
     }
   }
 

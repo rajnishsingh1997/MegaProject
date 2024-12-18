@@ -1,9 +1,8 @@
 import Navbar from "./components/Navbar";
 import UploadArea from "./components/upload/UploadArea";
-import Login from "./pages/Login-Page/Login";
-import Signup from "./pages/Sign-Up-Page/Signup";
-
 import { BrowserRouter, Routes, Route } from "react-router";
+import Login from "./Pages/Login-page/Login";
+import Signup from "./Pages/Sign-Up-Page/Signup";
 
 function App() {
   return (
@@ -14,7 +13,7 @@ function App() {
         </div>
         <Routes>
           <Route path="/" element={<UploadArea />} />
-          <Route path="/v1/auth/signup" element={<Signup />} />
+          <Route path="/v1/auth/signup" element={<Signup/>} />
           <Route path="/v1/auth/login" element={<Login/>} />
         </Routes>
       </BrowserRouter>
