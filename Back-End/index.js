@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import connectToDatabase from "./config/db.js";
 import User from "./models/UserSchema.js";
-import verifyToken from "./Middlware/authMiddleware.js"
+import multer from "multer";
 
 
 dotenv.config();
@@ -70,7 +70,11 @@ app.post("/login", async (req, res, next) => {
   }
 });
 
-
+app.post("/upload", async (req, res) => {
+  res.send({
+    message: "File uploaded successfully",
+  })
+  });
 
 app.listen(process.env.PORT, () =>
   console.log(`Server Started on port ${process.env.PORT}`)

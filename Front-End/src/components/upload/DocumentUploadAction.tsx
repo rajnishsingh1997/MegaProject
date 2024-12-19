@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import { Input } from "../ui/input";
 import clsx from "clsx";
 import { useState } from "react";
+import axios from "axios";
 
 interface Props {
   show: boolean;
@@ -17,11 +18,21 @@ const DocumentUploadModal = ({
 }: Props) => {
   const [isSelected, setIsSelected] = useState<boolean>(false);
 
-  function resetState(){
-    setIsSelected(false)
+  function resetState() {
+    setIsSelected(false);
     setIsModalOpen(false);
   }
 
+  const handleFileUpload = async (file: any) => {
+    try {
+      let data = null;
+      const formData = new FormData();
+      formData.append("selectedPDF", file);
+      data=formData;
+      const response = await axios.post("http://localhost:3000/upload", data);
+      
+    } catch (error) {}
+  };
 
   return (
     <div>
@@ -68,7 +79,7 @@ const DocumentUploadModal = ({
                       "border",
                       "border-gray-200 ",
                       "mb-2",
-                      {"bg-gray-200":isSelected}
+                      { "bg-gray-200": isSelected }
                     )}
                   >
                     <div className="w-10 h-10 bg-gray-300 flex items-center justify-center rounded-lg mr-4">
@@ -87,14 +98,20 @@ const DocumentUploadModal = ({
           <Modal.Footer className="flex justify-end px-6 mt-40">
             <Button
               onClick={() => {
-                resetState()
+                resetState();
               }}
               variant="outline"
               className="bg-white text-blue-600 border-0 rounded-md shadow-md px-4 py-2 font-medium mr-4"
             >
               Cancel
             </Button>
-            <Button disabled={!isSelected} className="bg-blue-600 text-white rounded-md px-4 py-2 font-medium">
+            <Button
+              onClick={() => {
+                handleFileUpload(uploadedFiles);
+              }}
+              disabled={!isSelected}
+              className="bg-blue-600 text-white rounded-md px-4 py-2 font-medium"
+            >
               Start Conversation
             </Button>
           </Modal.Footer>

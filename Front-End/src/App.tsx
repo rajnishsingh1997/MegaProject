@@ -1,8 +1,9 @@
 import Navbar from "./components/Navbar";
 import UploadArea from "./components/upload/UploadArea";
 import { BrowserRouter, Routes, Route } from "react-router";
-import Login from "./Pages/Login-page/Login";
-import Signup from "./Pages/Sign-Up-Page/Signup";
+import Signup from "./pages/Sign-Up-Page/Signup";
+import Login from "./pages/Login-Page/Login";
+
 
 function App() {
   return (
