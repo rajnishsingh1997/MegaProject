@@ -25,7 +25,7 @@ function Dropzone() {
     <div>
       <div
         {...getRootProps({
-          className: `border-2 border-dashed border-white rounded-lg bg-blue-600 p-8 px-72 flex flex-col items-center justify-center text-center space-y-4`,
+          className: `border-2 w-[60%] mx-auto mt-2 border-dashed border-white rounded-lg bg-blue-600 p-8 px-72 flex flex-col items-center justify-center text-center space-y-4`,
         })}
         onChange={()=>setIsModalOpen(true)}
       >
