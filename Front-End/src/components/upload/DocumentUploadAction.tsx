@@ -27,9 +27,9 @@ const DocumentUploadModal = ({
     try {
       let data = null;
       const formData = new FormData();
-      formData.append("selectedPDF", file);
-      data=formData;
-      const response = await axios.post("http://localhost:3000/upload", data);
+      formData.append("file", file);
+  
+      const response = await axios.post("http://localhost:3000/upload", formData);
       
     } catch (error) {}
   };

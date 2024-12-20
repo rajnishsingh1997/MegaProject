@@ -7,7 +7,6 @@ import connectToDatabase from "./config/db.js";
 import User from "./models/UserSchema.js";
 import multer from "multer";
 
-
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -70,11 +69,38 @@ app.post("/login", async (req, res, next) => {
   }
 });
 
-app.post("/upload", async (req, res) => {
-  res.send({
-    message: "File uploaded successfully",
-  })
-  });
+const DIR = "./public/";
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, DIR);
+  },
+  filename: (req, file, cb) => {
+    const fileName = file.originalname.toLowerCase().split(" ").join("-");
+    cb(null, uuidv4() + "-" + fileName);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.post("/upload", upload.single("file"), async (req, res) => {
+  try {
+    const file = req.file;
+    if (!file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    res.status(200).json({
+      message: "File uploaded successfully",
+      file: {
+        filename: file.filename,
+        path: file.path,
+        size: file.size,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 app.listen(process.env.PORT, () =>
   console.log(`Server Started on port ${process.env.PORT}`)
