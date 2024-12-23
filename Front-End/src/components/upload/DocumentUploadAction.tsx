@@ -16,29 +16,50 @@ const DocumentUploadModal = ({
   setIsModalOpen,
   uploadedFiles,
 }: Props) => {
-  const [isSelected, setIsSelected] = useState<boolean>(false);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   function resetState() {
-    setIsSelected(false);
+    setSelectedFiles([]);
     setIsModalOpen(false);
   }
 
-  const handleFileUpload = async (file: any) => {
+  const handleFileUpload = async () => {
+    if (selectedFiles.length === 0) {
+      console.error("No files selected for upload");
+      return;
+    }
+
     try {
-      let data = null;
-      const formData = new FormData();
-      formData.append("file", file);
-  
-      const response = await axios.post("http://localhost:3000/upload", formData);
-      
-    } catch (error) {}
+      for (const file of selectedFiles) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await axios.post("http://localhost:3000/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        
+      }
+    } catch (error) {
+      console.error("Error uploading files:", error);
+    }
+  };
+
+  const toggleFileSelection = (file: File) => {
+    setSelectedFiles((prev) =>
+      prev.includes(file)
+        ? prev.filter((f) => f !== file)
+        : [...prev, file]
+    );
   };
 
   return (
     <div>
       <Modal
         show={show}
-        onHide={() => setIsModalOpen(false)}
+        onHide={resetState}
         dialogClassName=""
         aria-labelledby="document-modal-title"
         className="fixed inset-0 flex items-center py-24 justify-center"
@@ -48,68 +69,42 @@ const DocumentUploadModal = ({
             closeButton
             className="border-b border-gray-200 px-6 py-4"
           >
-            <div className="w-full">
-              <Modal.Title
-                id="document-modal-title"
-                className="flex justify-between items-center text-lg font-semibold"
-              >
-                <p className="text-gray-800">Document</p>
-                <Input
-                  className="w-[30%] px-3 py-2 border border-gray-300 rounded-md"
-                  type="text"
-                  placeholder="Search"
-                />
-              </Modal.Title>
-            </div>
+            <Modal.Title id="document-modal-title" className="text-lg font-semibold">
+              <p className="text-gray-800">Document</p>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body className="p-6">
             <div>
-              {uploadedFiles.map((singleFile) => {
-                return (
-                  <div
-                    onClick={() => {
-                      setIsSelected(!isSelected);
-                    }}
-                    key={singleFile.name}
-                    className={clsx(
-                      "flex",
-                      "items-center",
-                      "p-4",
-                      " rounded-lg",
-                      "border",
-                      "border-gray-200 ",
-                      "mb-2",
-                      { "bg-gray-200": isSelected }
-                    )}
-                  >
-                    <div className="w-10 h-10 bg-gray-300 flex items-center justify-center rounded-lg mr-4">
-                      <span className="text-gray-600">📄</span>
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-gray-800 font-medium">
-                        {singleFile.name}
-                      </p>
-                    </div>
+              {uploadedFiles.map((singleFile) => (
+                <div
+                  key={singleFile.name}
+                  onClick={() => toggleFileSelection(singleFile)}
+                  className={clsx(
+                    "flex items-center p-4 rounded-lg border border-gray-200 mb-2 cursor-pointer",
+                    { "bg-gray-200": selectedFiles.includes(singleFile) }
+                  )}
+                >
+                  <div className="w-10 h-10 bg-gray-300 flex items-center justify-center rounded-lg mr-4">
+                    <span className="text-gray-600">📄</span>
                   </div>
-                );
-              })}
+                  <div className="flex-1">
+                    <p className="text-gray-800 font-medium">{singleFile.name}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </Modal.Body>
-          <Modal.Footer className="flex justify-end px-6 mt-40">
+          <Modal.Footer className="flex justify-end px-6">
             <Button
-              onClick={() => {
-                resetState();
-              }}
+              onClick={resetState}
               variant="outline"
               className="bg-white text-blue-600 border-0 rounded-md shadow-md px-4 py-2 font-medium mr-4"
             >
               Cancel
             </Button>
             <Button
-              onClick={() => {
-                handleFileUpload(uploadedFiles);
-              }}
-              disabled={!isSelected}
+              onClick={handleFileUpload}
+              disabled={selectedFiles.length === 0}
               className="bg-blue-600 text-white rounded-md px-4 py-2 font-medium"
             >
               Start Conversation
