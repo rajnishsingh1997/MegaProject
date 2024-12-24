@@ -1,15 +1,19 @@
 import jwt from "jsonwebtoken";
 
-
 const verifyToken = (req, res, next) => {
-  const token = req.header("Authorization");
-  if (!token) return res.status(401).json({ error: "Access denied" });
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (!token) {
+    return res
+      .status(401)
+      .json({ message: "Access denied. No token provided." });
+  }
   try {
-    const decoded = jwt.verify(token, "your-secret-key");
-    req.userId = decoded.userId;
+    const decoded = jwt.verify(token, process.env.Jwt_Secret_key);
+    req.user = decoded;
     next();
-  } catch (error) {
-    res.status(401).json({ error: "Invalid token" });
+  } catch (err) {
+    return res.status(403).json({ message: "Invalid token" });
   }
 };
-export default verifyToken
+export default verifyToken;

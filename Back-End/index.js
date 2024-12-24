@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import connectToDatabase from "./config/db.js";
 import User from "./models/UserSchema.js";
 import upload from "./middleware/upload.js";
+import verifyToken from "./middleware/authMiddleware.js";
 
 dotenv.config();
 const app = express();
@@ -69,39 +70,25 @@ app.post("/login", async (req, res, next) => {
   }
 });
 
-app.post("/upload", upload.single("file"), async (req, res) => {
+app.post("/upload", verifyToken, upload.single("file"), async (req, res) => {
   const file = req.file;
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+  const userId = req.user.userId;
 
-  if (!token) {
-    return res.status(401).json({ message: "No token provided" });
-  }
   if (!file) {
     return res.status(400).json({ message: "Please upload a file" });
   }
 
-  // jwt.verify(token, process.env.Jwt_Secret_key, (err, decoded) => {
-  //   if (err) {
-  //     return res.status(403).json({ message: 'Invalid token' });
-  //   }
-  //   req.user = decoded;
-  //   next();
-  // });
-  const decoded = jwt.verify(token, process.env.Jwt_Secret_key);
-
-  const userId = decoded.userId;
   const user = await User.findById(userId);
 
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
   user.pdfUploaded = { pdf: file.path };
-    await user.save();
-    return res.status(200).json({
-      message: "File has been uploaded and user updated successfully!",
-      filePath: file.path,
-    });
+  await user.save();
+  return res.status(200).json({
+    message: "File has been uploaded and user updated successfully!",
+    filePath: file.path,
+  });
 });
 
 app.listen(process.env.PORT, () =>
