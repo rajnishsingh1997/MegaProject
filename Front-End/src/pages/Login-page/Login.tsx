@@ -13,12 +13,16 @@ import {
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const formSchema = z.object({
     email: z.string().email(),
     password: z.string().min(8, { message: "Password is required" }),
   });
+
+  const navigate = useNavigate();
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,13 +43,14 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:3000/login", values);
       if (allowedStatusCode.includes(response.status.toString())) {
+        localStorage.setItem('authToken', response?.data?.token);
         toast({
           title: "Success",
           description: "Successfully Logged In",
         });
+        navigate("/");
       }
     } catch (err: any) {
-      console.log(err);
       toast({
         title: "Failed To Login",
         description:

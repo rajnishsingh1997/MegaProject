@@ -29,18 +29,26 @@ const DocumentUploadModal = ({
       return;
     }
 
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      return;
+    }
+
     try {
       for (const file of selectedFiles) {
         const formData = new FormData();
         formData.append("file", file);
 
-        const response = await axios.post("http://localhost:3000/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-
-        
+        const response = await axios.post(
+          "http://localhost:3000/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              "Authorization":`Bearer ${token}`
+            },
+          }
+        );
       }
     } catch (error) {
       console.error("Error uploading files:", error);
@@ -49,9 +57,7 @@ const DocumentUploadModal = ({
 
   const toggleFileSelection = (file: File) => {
     setSelectedFiles((prev) =>
-      prev.includes(file)
-        ? prev.filter((f) => f !== file)
-        : [...prev, file]
+      prev.includes(file) ? prev.filter((f) => f !== file) : [...prev, file]
     );
   };
 
@@ -69,7 +75,10 @@ const DocumentUploadModal = ({
             closeButton
             className="border-b border-gray-200 px-6 py-4"
           >
-            <Modal.Title id="document-modal-title" className="text-lg font-semibold">
+            <Modal.Title
+              id="document-modal-title"
+              className="text-lg font-semibold"
+            >
               <p className="text-gray-800">Document</p>
             </Modal.Title>
           </Modal.Header>
@@ -88,7 +97,9 @@ const DocumentUploadModal = ({
                     <span className="text-gray-600">📄</span>
                   </div>
                   <div className="flex-1">
-                    <p className="text-gray-800 font-medium">{singleFile.name}</p>
+                    <p className="text-gray-800 font-medium">
+                      {singleFile.name}
+                    </p>
                   </div>
                 </div>
               ))}

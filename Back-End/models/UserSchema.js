@@ -20,6 +20,9 @@ const userSchema = new mongoose.Schema({
     minlength: 8,
     maxlength: 100,
   },
+  pdfUploaded:{
+    pdf:String
+  }
 });
 
 const User = mongoose.model("User", userSchema);
