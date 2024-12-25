@@ -4,6 +4,7 @@ import { Input } from "../ui/input";
 import clsx from "clsx";
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "@/hooks/use-toast";
 
 interface Props {
   show: boolean;
@@ -30,6 +31,7 @@ const DocumentUploadModal = ({
     }
 
     const token = localStorage.getItem("authToken");
+
     if (!token) {
       return;
     }
@@ -49,6 +51,10 @@ const DocumentUploadModal = ({
             },
           }
         );
+        const filePath = response.data.filePath.split("\\")
+        const fileName = filePath[filePath.length - 1];
+        
+        toast({ title: "Success", description: `${fileName} has been uploaded` });
       }
     } catch (error) {
       console.error("Error uploading files:", error);
